@@ -1,43 +1,34 @@
-# GitHub Upload Setup
+# GitHub 上传步骤
 
-## SSH Key
-
-Open GitHub:
-
-```text
-Settings -> SSH and GPG keys -> New SSH key
-```
-
-Use this title:
-
-```text
-ubuntu22-to-gl-be6500-20260712
-```
-
-Use this key. Copy it as one single line:
-
-```text
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAOk7d+jJ58On8DDvcsYP19Wr4NBLN1aVPZKAU+MvqI6 ubuntu22-to-gl-be6500-20260712
-```
-
-The expected key fingerprint is:
-
-```text
-SHA256:kqXkFP7uQA9zM62cZJ8pyLQAJau4NH7Wxzx98sqTKFc
-```
-
-## Repository Remote
-
-After creating an empty GitHub repository, copy its SSH URL. It should look like this:
-
-```text
-git@github.com:YOUR_USERNAME/robot_urdf_kinematics.git
-```
-
-Send that SSH URL back to me and I can run:
+## 1. 提交本地仓库
 
 ```bash
-git remote add origin git@github.com:YOUR_USERNAME/robot_urdf_kinematics.git
+git status
+git add .
+git commit -m "Prepare URDF kinematics toolkit and MATLAB visualizer"
+```
+
+构建目录、编译产物和 MATLAB 导出的 PDF 已由 `.gitignore` 排除。
+
+## 2. 创建空仓库并添加远程地址
+
+在 GitHub 新建空仓库，例如 `robot_urdf_kinematics`，然后执行：
+
+```bash
+git remote add origin https://github.com/<用户名>/robot_urdf_kinematics.git
+```
+
+也可以使用 SSH：
+
+```bash
+git remote add origin git@github.com:<用户名>/robot_urdf_kinematics.git
+```
+
+## 3. 推送
+
+```bash
 git branch -M main
 git push -u origin main
 ```
+
+首次使用 SSH 时，请在 GitHub 的 **Settings → SSH and GPG keys** 添加你自己的公钥。不要把私钥、访问令牌或账号密码写入仓库。

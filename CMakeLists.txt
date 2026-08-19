@@ -7,8 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 find_package(Eigen3 REQUIRED)
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(TINYXML2 REQUIRED tinyxml2)
+find_package(tinyxml2 CONFIG REQUIRED)
 
 add_library(robot_kinematics
     src/Model.cpp
@@ -20,11 +19,13 @@ add_library(robot_kinematics
 target_include_directories(robot_kinematics
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
-        ${TINYXML2_INCLUDE_DIRS}
 )
-target_link_directories(robot_kinematics PUBLIC ${TINYXML2_LIBRARY_DIRS})
-target_link_libraries(robot_kinematics PUBLIC Eigen3::Eigen ${TINYXML2_LIBRARIES})
-target_compile_options(robot_kinematics PRIVATE -Wall -Wextra -Wpedantic)
+target_link_libraries(robot_kinematics PUBLIC Eigen3::Eigen tinyxml2::tinyxml2)
+if (MSVC)
+    target_compile_options(robot_kinematics PRIVATE /W4)
+else()
+    target_compile_options(robot_kinematics PRIVATE -Wall -Wextra -Wpedantic)
+endif()
 
 add_executable(robot_kinematics_cli src/main.cpp)
 target_link_libraries(robot_kinematics_cli PRIVATE robot_kinematics)
